@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+    <article class="media content-section">
+      <div class="media-body">
+        <div class="article-metadata">
+          <h3 class="text-muted">Organization Name : {{ post.author.username }}</h3>
+            {% if post.author == current_user %}
+              <div>
+                <a class="btn btn-info btn-sm mt-1 mb-1" href="{{ url_for('update_post', post_id=post.id) }}">Update</a>
+                <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+              </div>
+            {% endif %}
+        </div>
+          <h5 class="article-title">Event Name : {{ post.title }} </h5>
+          <div class="row article-content">
+            <p class="col ">Post Time : {{ post.post_created_time.strftime('%Y-%m-%d') }}</p>
+            <p class="col ">Enroll Close Date : {{ post.enroll_close_date }}</p>
+          </div>
+          <div class="row article-content">
+            <p class="col ">Event Date:{{ post.date }}</p>
+            <p class="col ">Event Time:{{ post.time }}</p>
+          </div>
+          <p class="article-content">Mission : {{ post.content }}</p>
+          <p class="article-content">Location:{{ post.location}}</p>
+      </div>
+    </article>
+
+    {% if current_user.category == 'volunteer' and join == [] %}
+        <form method="POST" action="" >
+                 {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                <div class="form-group">
+                    {{ form.volunteer_contact.label(class="form-control-label") }}
+                    {% if form.volunteer_contact.errors %}
+                        {{ form.volunteer_contact(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.volunteer_contact.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.volunteer_contact(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-success") }}
+                </div>
+                </fieldset>
+        </form>
+    {% endif %}
+
+<!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Post ?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
+            <input class="btn btn-danger" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock content %}

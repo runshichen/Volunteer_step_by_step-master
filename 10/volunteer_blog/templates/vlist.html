@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% block content %}
+                 <!-- table -->
+                    <table class="table table-borderless">
+                        <tr>
+                            <legend>Event : {{ post_title }}
+                                <a class="btn btn-outline-success btn-sm mt-10 mb-9" href={{url_for('return_file',post_id=post_id)}} style="float: right;">export xlsx</a>
+                            </legend>
+                        </tr>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Contact</th>
+                        </tr>
+                        {% for join in or_joins %}
+                            {% if join.post_id == post_id %}
+                              <tbody>
+                                <tr>
+                                  <td>{{ join.volunteer_username }}</td>
+                                  <td>{{ join.volunteer_email }}</td>
+                                  <td>{{ join.volunteer_contact }}</td>
+                              </tbody>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                <button type="button" class="btn btn-success" ><a href="{{url_for('account')}}" style="color: #fff">Back</a></button>
+
+
+
+
+
+
+
+{% endblock content %}
